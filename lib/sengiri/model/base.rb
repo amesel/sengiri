@@ -118,7 +118,9 @@ module Sengiri
         end
 
         def establish_shard_connection(name)
-          establish_connection dbconfs["#{@sharding_group_name}_shard_#{name}_#{env}#{@sharding_database_suffix}"]
+          conf = dbconfs["#{@sharding_group_name}_shard_#{name}_#{env}#{@sharding_database_suffix}"]
+          establish_connection conf
+          ActiveRecord::Base.establish_connection conf unless defined? Rails
         end
 
         def has_many_with_sharding(name, scope = nil, options = {}, &extension)
